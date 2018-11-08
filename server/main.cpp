@@ -1,4 +1,19 @@
-int main(int argc, char *argv[]) {
+#include "ParseCmdLine.h"
+#include "JoinServer.h"
+#include <iostream>
 
+#include "json/json.hpp"
+
+using json = nlohmann::json;
+
+int main(int argc, char *argv[]) {
+    ParseCmdLine cmdLine(argc, argv);
+    if (!cmdLine.is_valid()) {
+        std::cerr << cmdLine.error() << std::endl;
+        return 1;
+    }
+
+    JoinServer app(cmdLine.port());
+    app.run();
     return 0;
 }
