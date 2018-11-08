@@ -2,10 +2,6 @@
 #include "JoinServer.h"
 #include <iostream>
 
-#include "json/json.hpp"
-
-using json = nlohmann::json;
-
 int main(int argc, char *argv[]) {
     ParseCmdLine cmdLine(argc, argv);
     if (!cmdLine.is_valid()) {
