@@ -2,6 +2,7 @@
 
 #include <string>
 #include <future>
+#include "QueueManager.h"
 
 struct QueryParser {
     using future_result_t = std::future<std::string>;
@@ -14,5 +15,5 @@ struct QueryParser {
 
 
 private:
-
+    QueueManager m_queue;
 };
