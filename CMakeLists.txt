@@ -9,7 +9,6 @@ project(queue VERSION 1.0.$ENV{TRAVIS_BUILD_NUMBER})
 add_subdirectory(server)
 #add_subdirectory(test)
 
-set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR "rfrolov")
