@@ -9,7 +9,7 @@ find_package(Boost COMPONENTS system REQUIRED)
 file(GLOB_RECURSE SOURCES *.cpp *.h)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/server)
 
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "ClientSession.h"
-#include "QueryParser.h"
+#include "../query/QueryParser.h"
 
 ClientSession::ClientSession(socket_t socket) :
         m_started{false}
@@ -45,17 +45,17 @@ void ClientSession::on_read(const boost::system::error_code &err, size_t /*data_
     std::string  data;
     std::getline(is, data);
 
-    QueryParser parser;
-    do_write(parser(data, m_future_result) + "\n");
-    do_read();
+    QueryParser               parser;
+    std::unique_ptr<ICommand> cmd;
 
-//    auto parser_result = QueryParser::parse(data, m_future_result);
-//    if (!parser_result.empty()) {
-//        do_write("ERR " + parser_result + "\n");
-//        do_read();
-//    } else {
-//        do_check_result();
-//    }
+    auto result = parser(data, cmd);
+    if (!result.empty()) {
+        do_write(result.dump() + "\n");
+        do_read();
+    } else {
+        m_future_result = cmd->execute();
+        do_check_result();
+    }
 }
 
 void ClientSession::do_check_result() {
@@ -64,21 +64,12 @@ void ClientSession::do_check_result() {
 }
 
 void ClientSession::on_check_result() {
-
-//    if (m_future_result.wait_for(std::chrono::microseconds(0)) == std::future_status::ready) {
-//        bool        is_error;
-//        std::string result;
-//        std::tie(is_error, result) = m_future_result.get();
-//        if (is_error) {
-//            do_write("ERR" + (result.empty() ? "" : " " + result) + "\n");
-//        } else {
-//            do_write(result + "OK" + "\n");
-//        }
-//
-//        do_read();
-//    } else {
-//        do_check_result();
-//    }
+    if (m_future_result.wait_for(std::chrono::microseconds(0)) == std::future_status::ready) {
+        do_write(m_future_result.get().dump() + "\n");
+        do_read();
+    } else {
+        do_check_result();
+    }
 }
 
 void ClientSession::do_write(std::string result) {

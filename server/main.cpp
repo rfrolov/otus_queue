@@ -1,5 +1,5 @@
 #include "ParseCmdLine.h"
-#include "JoinServer.h"
+#include "server/JoinServer.h"
 #include <iostream>
 
 int main(int argc, char *argv[]) {

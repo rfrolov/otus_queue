@@ -3,7 +3,7 @@
 #include "boost/asio.hpp"
 #include <functional>
 #include <future>
-//#include "QueryParser.h"
+#include "json/json.hpp"
 
 namespace ba = boost::asio;
 
@@ -23,7 +23,7 @@ struct ClientSession : std::enable_shared_from_this<ClientSession> {
     void stop();
 
 private:
-//    using future_result_t = QueryParser::future_result_t;
+    using json = nlohmann::json;
 
     void do_read();
     void do_check_result();
@@ -33,10 +33,9 @@ private:
     void on_check_result();
 
 
-
     bool                           m_started;
     ba::streambuf                  m_read_buffer;
-    std::future<std::string>       m_future_result;
+    std::future<json>              m_future_result;
     socket_t                       m_socket;
     std::shared_ptr<ClientSession> m_self;
 };
